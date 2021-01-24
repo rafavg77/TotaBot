@@ -1,6 +1,14 @@
 # TotaBot
 Telegram Personal Bot by Tota
 
+## Installation
+```bash
+$ git clone git@github.com:rafavg77/TotaBot.git
+$ cd TotaBot 
+$ pip3 install -r requeriments.txt
+$ python3 src/boy.py
+```
+
 # TODO:
 - [x] Check Public IP
 - [x] Check Internet Speed
