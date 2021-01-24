@@ -1,6 +1,8 @@
 # TotaBot
 Telegram Personal Bot by Tota
 
+![screen](https://raw.githubusercontent.com/rafavg77/TotaBot/main/img/botCommands.png)
+
 ## Installation
 ```bash
 $ git clone git@github.com:rafavg77/TotaBot.git
