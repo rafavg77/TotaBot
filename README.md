@@ -9,7 +9,7 @@ $ pip3 install -r requeriments.txt
 $ python3 src/boy.py
 ```
 
-# TODO:
+## TODO:
 - [x] Check Public IP
 - [x] Check Internet Speed
 - [x] Get blocking status of PiHole
