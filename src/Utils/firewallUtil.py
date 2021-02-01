@@ -20,30 +20,31 @@ logger = logging.getLogger(__name__)
 
 class FirewallApi:
 
-    def __init__(self):
-            logger.info("Let's do This :D")
+    #def __init__(self):
+    #       logger.info("Let's do This :D")
 
     def disableWan(self,wan_interface):
-        self.login()
-        self.getStatus2()
-        self.disableWanInterface(wan_interface)
+        self.firewallLogin()
+        self.firewallGetStatus2()
+        self.firewallDisableWanInterface(wan_interface)
         time.sleep(3)
-        self.getStatus2()
-        #self.viewRoutes()
-        #self.getWanStatus()
-        self.logout()
+        self.firewallGetStatus2()
+        self.firewallLogout()
     
     def enableWan(self,wan_interface):
-        self.login()
-        self.getStatus2()
-        self.enableWanInterface(wan_interface)
+        self.firewallLogin()
+        self.firewallGetStatus2()
+        self.firewallEnableWanInterface(wan_interface)
         time.sleep(3)
-        self.getStatus2()
-        #self.viewRoutes()
-        #self.getWanStatus()
-        self.logout()
+        self.firewallGetStatus2()
+        self.firewallLogout()
+    
+    def getAllWANStatus(self):
+        self.firewallLogin()
+        self.firewallGetStatus2()
+        self.firewallLogout()
 
-    def login(self):
+    def firewallLogin(self):
 
         SESSION = requests.Session()
         paramsGet = {"form":"login"}
@@ -62,7 +63,7 @@ class FirewallApi:
         self.responseSotk = responseSotk
         self.Setcookie = Setcookie
 
-    def getStatus2(self):
+    def firewallGetStatus2(self):
         session = requests.Session()
 
         paramsGet = {"form":"status2"}
@@ -71,9 +72,11 @@ class FirewallApi:
         cookies = self.Setcookie
         response = session.post(BASE_URL+"/cgi-bin/luci/;stok={}/admin/interface".format(self.responseSotk), data=paramsPost, params=paramsGet, headers=headers, cookies=cookies)
 
-        logger.info("Response  Status2 body: %s" % response.content)
+        json_object = json.loads(response.content)
+        status2 = json.dumps(json_object, indent=2)
+        logger.info("Response  Status2 body: %s" % status2)
 
-    def viewRoutes(self):
+    def firewallViewRoutes(self):
         SESSION = requests.Session()
         paramsGet = {"form":"policy_route"}
         paramsPost = {"data":"{\"method\":\"get\",\"params\":{}}"}
@@ -86,7 +89,7 @@ class FirewallApi:
         resultado = json.loads(response.content)
         return(resultado)
 
-    def logout(self):
+    def firewallLogout(self):
         SESSION = requests.Session()
         paramsGet = {"form":"logout"}
         paramsPost = {"data":"{\"method\":\"set\"}"}
@@ -98,7 +101,7 @@ class FirewallApi:
         logger.info("Status code:   %i" % response.status_code)
         logger.info("Response body: %s" % response.content)
 
-    def getWanStatus(self):
+    def firewallGetWanStatus(self):
         session = requests.Session()
         paramsGet = {"form":"status"}
         paramsPost = {"data":"{\"method\":\"get\",\"params\":{\"wan_id\":1,\"proto\":\"dhcp\"}}"}
@@ -109,7 +112,7 @@ class FirewallApi:
         logger.info("Status code:   %i" % response.status_code)
         logger.info("Response body: %s" % response.content)
 
-    def disableWanInterface(self,wan_interface):
+    def firewallDisableWanInterface(self,wan_interface):
         session = requests.Session()
 
         paramsGet = {"form":"disconnect"}
@@ -121,7 +124,7 @@ class FirewallApi:
         logger.info("Status code:   %i" % response.status_code)
         logger.info("Response body: %s" % response.content)
     
-    def enableWanInterface(self,wan_interface):
+    def firewallEnableWanInterface(self,wan_interface):
         session = requests.Session()
 
         paramsGet = {"form":"connect"}
@@ -134,4 +137,4 @@ class FirewallApi:
         logger.info("Response body: %s" % response.content)
 
 #fw = FirewallApi()
-#fw.disableWan()
+#fw.getAllWANStatus()
