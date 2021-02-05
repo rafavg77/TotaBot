@@ -20,9 +20,6 @@ logger = logging.getLogger(__name__)
 
 class FirewallApi:
 
-    #def __init__(self):
-    #       logger.info("Let's do This :D")
-
     def disableWan(self,wan_interface):
         self.firewallLogin()
         self.firewallGetStatus2()
@@ -32,6 +29,7 @@ class FirewallApi:
         self.firewallLogout()
     
     def enableWan(self,wan_interface):
+        logger.info(wan_interface)
         self.firewallLogin()
         self.firewallGetStatus2()
         self.firewallEnableWanInterface(wan_interface)
@@ -41,8 +39,9 @@ class FirewallApi:
     
     def getAllWANStatus(self):
         self.firewallLogin()
-        self.firewallGetStatus2()
+        status = self.firewallGetStatus2()
         self.firewallLogout()
+        return status
 
     def firewallLogin(self):
 
@@ -75,6 +74,8 @@ class FirewallApi:
         json_object = json.loads(response.content)
         status2 = json.dumps(json_object, indent=2)
         logger.info("Response  Status2 body: %s" % status2)
+
+        return status2
 
     def firewallViewRoutes(self):
         SESSION = requests.Session()

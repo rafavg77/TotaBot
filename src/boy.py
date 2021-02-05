@@ -4,6 +4,7 @@ from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, Callb
 from Utils.getPublicInfo import GetPublicIP
 from Utils.getSpeedTest import GetSpeed
 from Utils.getPiHole import *
+from Utils.firewallUtil import *
 from configparser import ConfigParser
 import os
 
@@ -53,6 +54,36 @@ def piholeenable(bot, update):
     setHoleEnable()
     bot.message.reply_text("Setting PiHole: Enable")
 
+def fwGetInterfaces(bot, update):
+    logger.info('I have received a /fwGetInterfaces command')
+    fw = FirewallApi()
+    status = fw.getAllWANStatus()
+    print(status)
+    bot.message.reply_text("Firwall Interfaces: " + status)
+
+def fwEnableWAN(bot, update):
+    wanInterface = bot.message.text.replace("/fwEnableWAN", "").strip()
+    print(wanInterface)
+    if int(wanInterface) < 3:    
+        logger.info('I have received a /fwEnableWAN command')
+        fw = FirewallApi()
+        status = fw.enableWan(int(wanInterface))
+        print(status)
+        bot.message.reply_text("Firwall Enabling WAN: " + wanInterface)
+    else:
+        bot.message.reply_text("Wrong Interface Number")
+
+def fwDisableWAN(bot, update):
+    wanInterface = bot.message.text.replace("/fwDisableWAN", "").strip()
+    if int(wanInterface) < 3:    
+        logger.info('I have received a /fwDisableWAN command')
+        fw = FirewallApi()
+        status = fw.disableWan(int(wanInterface))
+        print(status)
+        bot.message.reply_text("Firwall Disabling WAN: " + wanInterface)
+    else:
+        bot.message.reply_text("Wrong Interface Number")
+
 if __name__ == '__main__':
 
     updater = Updater(token=token_bot,use_context=True)
@@ -65,6 +96,9 @@ if __name__ == '__main__':
     dispatcher.add_handler(CommandHandler('piholestatus', piholestatus))
     dispatcher.add_handler(CommandHandler('pihodisable', pihodisable))
     dispatcher.add_handler(CommandHandler('pihoenable', piholeenable))
-    
+    dispatcher.add_handler(CommandHandler('fwGetInterfaces', fwGetInterfaces))
+    dispatcher.add_handler(CommandHandler('fwEnableWAN', fwEnableWAN))
+    dispatcher.add_handler(CommandHandler('fwDisableWAN', fwDisableWAN))
+
     updater.start_polling()
     updater.idle()
