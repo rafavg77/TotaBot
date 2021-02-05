@@ -20,5 +20,5 @@ $ python3 src/boy.py
 - [x] Disable blocking of PiHole
 - [x] Enbale blocking of PiHole
 - [x] Connect with TP-R470T+
-    - [ ] Get status of WAN interfaces
-    - [ ] Enable/Disable specific WAN interface
+    - [x] Get status of WAN interfaces
+    - [x] Enable/Disable specific WAN interface
