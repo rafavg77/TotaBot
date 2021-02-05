@@ -1,0 +1,15 @@
+[Unit]
+Description=Telegram Tota Bot 
+
+Wants=network.target
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/python3 /path/to/TotaBot/src/bot.py
+Restart=on-failure
+RestartSec=10
+SyslogIdentifier=telegram-bot-tota
+User=pi
+
+[Install]
+WantedBy=multi-user.target
